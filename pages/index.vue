@@ -12,7 +12,7 @@
           v-for="(tile,idx) in row"
           :key="idx"
         >
-          {{ tile }}
+          <tile :tile="tile" />
         </div>
       </div>
     </div>

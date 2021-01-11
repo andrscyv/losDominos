@@ -6,6 +6,7 @@
 
 <style>
 html {
+  background-color: black;
   font-family:
     'Source Sans Pro',
     -apple-system,
