@@ -9,7 +9,7 @@
           :tile="tile.pips"
           :vertical="true"
           :class="{'tile--selected': tile.isSelected}"
-          @click.native="selectTile(tile.id)"
+          @click.native="selectTile(tile)"
         />
       </div>
     </draggable>
@@ -24,39 +24,32 @@ export default {
   },
   data () {
     return {
-      tiles: [
-        {
-          id: 1,
-          pips: [1, 2],
-          isSelected: false
-        },
-        {
-          id: 2,
-          pips: [1, 3],
-          isSelected: false
-        },
-        {
-          id: 3,
-          pips: [1, 4],
-          isSelected: false
-        }
-      ]
+    }
+  },
+  computed: {
+    tiles: {
+      get () {
+        return this.$store.state.playerTiles
+      },
+      set (tiles) {
+        this.$store.commit('setPlayerTiles', tiles)
+      }
     }
   },
   methods: {
-    selectTile (id) {
-      const tile = this.tiles.find(tile => tile.id === id)
-
+    selectTile (tile) {
       if (tile.isSelected) {
-        tile.isSelected = false
+        this.$store.commit('setPlayerTileSelected', { tileId: tile.id, isSelected: false })
         this.$store.commit('setSelectedTile', null)
         return
       }
 
-      tile.isSelected = true
+      this.$store.commit('setPlayerTileSelected', { tileId: tile.id, isSelected: true })
       this.$store.commit('setSelectedTile', tile.pips)
-      this.tiles.forEach((tile) => {
-        if (tile.id !== id) { tile.isSelected = false }
+      this.tiles.forEach((t) => {
+        if (t.id !== tile.id) {
+          this.$store.commit('setPlayerTileSelected', { tileId: t.id, isSelected: false })
+        }
       })
     }
   }

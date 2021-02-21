@@ -9,6 +9,7 @@
         :key="idx"
         :tile="tile"
         :is-highlighted="isValidMoveByTile[idx]"
+        @click.native="playTile(idx)"
       />
     </div>
     <score-board style="position:fixed;top:10px;right:30px" />
@@ -24,19 +25,19 @@ export default {
     }
   },
   computed: {
-    ...mapState(['selectedTile']),
-    tilesPlayed () {
-      // const tiles = []
-      // for (let i = 0; i < 7; i++) {
-      //   for (let k = i; k < 7; k++) { tiles.push([i, k]) }
-      // }
-      // return tiles
-      return [
-        [3, 6],
-        [6, 6],
-        [6, 2]
-      ]
-    },
+    ...mapState(['selectedTile', 'tilesPlayed']),
+    // tilesPlayed () {
+    //   // const tiles = []
+    //   // for (let i = 0; i < 7; i++) {
+    //   //   for (let k = i; k < 7; k++) { tiles.push([i, k]) }
+    //   // }
+    //   // return tiles
+    //   return [
+    //     [3, 6],
+    //     [6, 6],
+    //     [6, 2]
+    //   ]
+    // },
     isValidMoveByTile () {
       const isValidArr = Array(this.tilesPlayed.length).fill(false)
       if (!this.selectedTile) {
@@ -52,6 +53,15 @@ export default {
     isValidMove (tileToPlay, tileInBoard, inLeftCorner) {
       const suitAtEnd = tileInBoard[inLeftCorner ? 0 : 1]
       return tileToPlay[0] === suitAtEnd || tileToPlay[1] === suitAtEnd
+    },
+    playTile (tileAtBoardIdx) {
+      if (!this.isValidMoveByTile[tileAtBoardIdx]) { return }
+      const playAtLeftEnd = tileAtBoardIdx === 0
+      this.$store.commit('playSelectedTile', {
+        playAtLeftEnd,
+        suitAtEnd: this.tilesPlayed[tileAtBoardIdx][playAtLeftEnd ? 0 : 1]
+
+      })
     }
   }
 }
