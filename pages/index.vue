@@ -1,29 +1,18 @@
 <template>
   <div>
     <h1 class="title">
-      Domino.
+      Dominó.
     </h1>
     <div class="game">
-      <!-- <div
-        v-for="(row,i) in gameRows"
-        :key="i"
-        :style="{ flexDirection: i % 2 == 0 ? 'row' : 'row-reverse'}"
-        class="game-row"
-      >
-        <div
-          v-for="(tile,idx) in row"
-          :key="idx"
-        >
-          <tile :tile="tile" />
-        </div>
-      </div> -->
-      <div
+      <domino
         v-for="(tile,idx) in tilesPlayed"
         :key="idx"
-      >
-        <tile :tile="tile" />
-      </div>
+        :tile="tile"
+        :is-highlighted="idx===27"
+      />
     </div>
+    <score-board style="position:fixed;top:10px;right:30px" />
+    <player-tiles style="position:fixed;bottom:0;left:0" />
   </div>
 </template>
 
@@ -31,41 +20,15 @@
 export default {
   data () {
     return {
-    //   tilesPlayed: [
-    //     [1, 2],
-    //     [1, 2],
-    //     [1, 2],
-    //     [1, 2],
-    //     [1, 2],
-    //     [1, 2],
-    //     [1, 2]
-    //   ]
-      tilesPerRow: 10
     }
   },
   computed: {
     tilesPlayed () {
       const tiles = []
-      for (let index = 0; index < 28; index++) {
-        tiles.push([index, 1])
+      for (let i = 0; i < 7; i++) {
+        for (let k = i; k < 7; k++) { tiles.push([i, k]) }
       }
       return tiles
-    },
-    gameRows () {
-      const rows = []
-      let currentRow = []
-
-      this.tilesPlayed.forEach((tile) => {
-        if (currentRow.length === this.tilesPerRow) {
-          rows.push(currentRow)
-          currentRow = []
-        }
-        currentRow.push(tile)
-      })
-
-      if (rows.flat().length < this.tilesPlayed.length) { rows.push(currentRow) }
-
-      return rows
     }
   }
 
@@ -79,12 +42,10 @@ export default {
     font-size: 30px;
     margin: 20px 10px
 }
-.game-row{
-    display: flex;
-    justify-content: space-around;
-}
 .game{
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    padding-bottom:180px;
 }
 </style>
