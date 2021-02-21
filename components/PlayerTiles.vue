@@ -49,10 +49,12 @@ export default {
 
       if (tile.isSelected) {
         tile.isSelected = false
+        this.$store.commit('setSelectedTile', null)
         return
       }
 
       tile.isSelected = true
+      this.$store.commit('setSelectedTile', tile.pips)
       this.tiles.forEach((tile) => {
         if (tile.id !== id) { tile.isSelected = false }
       })
