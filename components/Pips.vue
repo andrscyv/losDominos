@@ -1,5 +1,5 @@
 <template>
-  <div class="tile-face left-side">
+  <div class="tile-face left-side" :class="{'tile-face--vertical':isVertical}">
     <div
       v-for="(dot,i) in pips"
       :key="i"
@@ -15,6 +15,10 @@ export default {
     n: {
       type: Number,
       required: true
+    },
+    isVertical: {
+      type: Boolean,
+      default: () => false
     }
   },
   computed: {
@@ -64,6 +68,10 @@ export default {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
+}
+.tile-face--vertical{
+    width: 100%;
+    height:50%;
 }
 .dot{
     width:8px;

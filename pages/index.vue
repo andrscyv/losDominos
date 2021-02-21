@@ -1,8 +1,10 @@
 <template>
   <div>
-    Los dominos
+    <h1 class="title">
+      Domino.
+    </h1>
     <div class="game">
-      <div
+      <!-- <div
         v-for="(row,i) in gameRows"
         :key="i"
         :style="{ flexDirection: i % 2 == 0 ? 'row' : 'row-reverse'}"
@@ -14,6 +16,12 @@
         >
           <tile :tile="tile" />
         </div>
+      </div> -->
+      <div
+        v-for="(tile,idx) in tilesPlayed"
+        :key="idx"
+      >
+        <tile :tile="tile" />
       </div>
     </div>
   </div>
@@ -65,7 +73,18 @@ export default {
 </script>
 
 <style scoped>
+.title{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+    font-size: 30px;
+    margin: 20px 10px
+}
 .game-row{
     display: flex;
+    justify-content: space-around;
+}
+.game{
+    display: flex;
+    flex-wrap: wrap;
 }
 </style>
