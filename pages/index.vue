@@ -8,7 +8,7 @@
         v-for="(tile,idx) in tilesPlayed"
         :key="idx"
         :tile="tile"
-        :is-highlighted="idx===27"
+        :is-highlighted="isValidMoveByTile[idx]"
       />
     </div>
     <score-board style="position:fixed;top:10px;right:30px" />
@@ -17,21 +17,43 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
     }
   },
   computed: {
+    ...mapState(['selectedTile']),
     tilesPlayed () {
-      const tiles = []
-      for (let i = 0; i < 7; i++) {
-        for (let k = i; k < 7; k++) { tiles.push([i, k]) }
+      // const tiles = []
+      // for (let i = 0; i < 7; i++) {
+      //   for (let k = i; k < 7; k++) { tiles.push([i, k]) }
+      // }
+      // return tiles
+      return [
+        [3, 6],
+        [6, 6],
+        [6, 2]
+      ]
+    },
+    isValidMoveByTile () {
+      const isValidArr = Array(this.tilesPlayed.length).fill(false)
+      if (!this.selectedTile) {
+        return isValidArr
       }
-      return tiles
+
+      isValidArr[0] = this.isValidMove(this.selectedTile, this.tilesPlayed[0], true)
+      isValidArr[this.tilesPlayed.length - 1] = this.isValidMove(this.selectedTile, this.tilesPlayed[this.tilesPlayed.length - 1], false)
+      return isValidArr
+    }
+  },
+  methods: {
+    isValidMove (tileToPlay, tileInBoard, inLeftCorner) {
+      const suitAtEnd = tileInBoard[inLeftCorner ? 0 : 1]
+      return tileToPlay[0] === suitAtEnd || tileToPlay[1] === suitAtEnd
     }
   }
-
 }
 </script>
 
