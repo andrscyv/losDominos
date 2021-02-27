@@ -49,6 +49,9 @@ export default {
       return isValidArr
     }
   },
+  mounted () {
+    this.$game.start()
+  },
   methods: {
     isValidMove (tileToPlay, tileInBoard, inLeftCorner) {
       const suitAtEnd = tileInBoard[inLeftCorner ? 0 : 1]
