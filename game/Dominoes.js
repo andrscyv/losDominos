@@ -3,7 +3,7 @@ export const Dominoes = {
     const tiles = buildTiles()
     return {
       tilesByPlayer: dealTiles(ctx.random.Shuffle(tiles)),
-      playedTiles: []
+      tilesPlayed: []
     }
   },
   turn: {
@@ -12,7 +12,7 @@ export const Dominoes = {
   moves: {
     playTile: (G, ctx, move) => {
       if (isValidMove(G, move)) {
-        nextState(G, move)
+        nextState(G, { ...move, player: ctx.currentPlayer })
       }
     },
     pass: (G, ctx) => {
@@ -49,18 +49,32 @@ export function buildTiles () {
   return tiles
 }
 
-export function isValidMove (G, { tile, playAtLeftSide }) {
+export function isValidMove (G, { tile, playAtLeftEnd }) {
   return true
 }
 
-export function nextState (G, { tile, playAtLeftSide, player }) {
-  if (playAtLeftSide) {
-    G.playedTiles.unshift(tile)
+export function nextState (G, { tile, playAtLeftEnd, player }) {
+  const { tilesPlayed } = G
+
+  if (tilesPlayed.length === 0) {
+    tilesPlayed.push(tile)
   } else {
-    G.playedTiles.push(tile)
+    const suitsAtEnds = getSuitsAtEnds(tilesPlayed)
+    const tileToPlay = [...tile]
+    if (playAtLeftEnd) {
+      if (suitsAtEnds[0] !== tileToPlay[1]) { tileToPlay.reverse() }
+      tilesPlayed.unshift(tileToPlay)
+    } else {
+      if (suitsAtEnds[1] !== tileToPlay[0]) { tileToPlay.reverse() }
+      tilesPlayed.push(tileToPlay)
+    }
   }
 
   G.tilesByPlayer[player] = G.tilesByPlayer[player].filter(t => !areEqual(t, tile))
+}
+
+export function getSuitsAtEnds (tilesPlayed) {
+  return [tilesPlayed[0][0], tilesPlayed[tilesPlayed.length - 1][1]]
 }
 
 export function areEqual (tile1, tile2) {

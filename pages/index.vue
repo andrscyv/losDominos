@@ -4,6 +4,7 @@
       Dominó.
     </h1>
     <div class="game">
+      <empty-domino v-if="tilesPlayed.length === 0 && selectedTile" @click.native="playFirstTile()" />
       <domino
         v-for="(tile,idx) in tilesPlayed"
         :key="idx"
@@ -26,18 +27,6 @@ export default {
   },
   computed: {
     ...mapState(['selectedTile', 'tilesPlayed']),
-    // tilesPlayed () {
-    //   // const tiles = []
-    //   // for (let i = 0; i < 7; i++) {
-    //   //   for (let k = i; k < 7; k++) { tiles.push([i, k]) }
-    //   // }
-    //   // return tiles
-    //   return [
-    //     [3, 6],
-    //     [6, 6],
-    //     [6, 2]
-    //   ]
-    // },
     isValidMoveByTile () {
       const isValidArr = Array(this.tilesPlayed.length).fill(false)
       if (!this.selectedTile) {
@@ -51,7 +40,7 @@ export default {
   },
   mounted () {
     this.$game.start()
-    // this.$game.client.subscribe(state => this.$store.commit('nextState', state))
+    this.$game.client.subscribe(state => this.$store.commit('setGameState', state))
   },
   methods: {
     isValidMove (tileToPlay, tileInBoard, inLeftCorner) {
@@ -61,11 +50,10 @@ export default {
     playTile (tileAtBoardIdx) {
       if (!this.isValidMoveByTile[tileAtBoardIdx]) { return }
       const playAtLeftEnd = tileAtBoardIdx === 0
-      this.$store.commit('playSelectedTile', {
-        playAtLeftEnd,
-        suitAtEnd: this.tilesPlayed[tileAtBoardIdx][playAtLeftEnd ? 0 : 1]
-
-      })
+      this.$store.dispatch('playSelectedTile', { playAtLeftEnd })
+    },
+    playFirstTile () {
+      this.$store.dispatch('playSelectedTile', { playAtLeftEnd: true })
     }
   }
 }

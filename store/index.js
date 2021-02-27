@@ -56,24 +56,28 @@ export const mutations = {
   setSelectedTile (state, tile) {
     state.selectedTile = tile
   },
-  playSelectedTile (state, { playAtLeftEnd, suitAtEnd }) {
+  setGameState (state, { G, ctx }) {
+    state.tilesPlayed = G.tilesPlayed
+    state.playerTiles = G.tilesByPlayer[0].map((tile, idx) => {
+      return {
+        id: idx,
+        pips: tile,
+        isSelected: false
+      }
+    })
+  }
+}
+
+export const actions = {
+  playSelectedTile ({ commit, state }, { playAtLeftEnd }) {
+    console.log(playAtLeftEnd)
     if (!state.selectedTile) {
       return
     }
-
-    const tileToPlay = state.selectedTile
-
-    if (playAtLeftEnd) {
-      if (suitAtEnd !== tileToPlay[1]) { tileToPlay.reverse() }
-      state.tilesPlayed.unshift(tileToPlay)
-    } else {
-      if (suitAtEnd !== tileToPlay[0]) { tileToPlay.reverse() }
-      state.tilesPlayed.push(tileToPlay)
-    }
-
-    state.playerTiles = state.playerTiles.filter((tile) => {
-      return !(tile.pips[0] === tileToPlay[0] && tile.pips[1] === tileToPlay[1])
+    this.$game.client.moves.playTile({
+      tile: state.selectedTile,
+      playAtLeftEnd
     })
-    state.selectedTile = null
+    commit('setSelectedTile', null)
   }
 }
