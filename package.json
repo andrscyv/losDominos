@@ -10,9 +10,10 @@
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint": "npm run lint:js",
     "test": "jest",
-    "deploy_surge":"nuxt generate; surge ./dist eldomino.surge.sh"
+    "deploy_surge": "nuxt generate; surge ./dist eldomino.surge.sh"
   },
   "dependencies": {
+    "boardgame.io": "^0.43.3",
     "core-js": "^3.6.5",
     "nuxt": "^2.14.6",
     "vuedraggable": "^2.24.3"
