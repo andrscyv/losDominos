@@ -13,7 +13,7 @@ export const Dominoes = {
       }
     },
     pass (G, ctx) {
-
+      console.log('hla')
     }
   }
 }
