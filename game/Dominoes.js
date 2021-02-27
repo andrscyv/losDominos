@@ -6,14 +6,24 @@ export const Dominoes = {
       playedTiles: []
     }
   },
+  turn: {
+    moveLimit: 1
+  },
   moves: {
-    playTile (G, ctx, move) {
+    playTile: (G, ctx, move) => {
       if (isValidMove(G, move)) {
         nextState(G, move)
       }
     },
-    pass (G, ctx) {
+    pass: (G, ctx) => {
 
+    }
+  },
+  endIf: (G, ctx) => {
+    for (let i = 0; i < 4; i++) {
+      if (G.tilesByPlayer[i].length === 0) {
+        return { winner: i }
+      }
     }
   }
 }

@@ -1,8 +1,5 @@
-import { Client } from 'boardgame.io/client'
-import { Dominoes } from '../game/Dominoes'
+import DominoesClient from '../game/DominoesClient'
 
 export default ({ app }, inject) => {
-  inject('game', Client({
-    game: Dominoes
-  }))
+  inject('game', new DominoesClient())
 }

@@ -51,6 +51,7 @@ export default {
   },
   mounted () {
     this.$game.start()
+    // this.$game.client.subscribe(state => this.$store.commit('nextState', state))
   },
   methods: {
     isValidMove (tileToPlay, tileInBoard, inLeftCorner) {
