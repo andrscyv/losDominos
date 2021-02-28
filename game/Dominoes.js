@@ -3,7 +3,7 @@ export const Dominoes = {
     const tiles = buildTiles()
     return {
       tilesByPlayer: dealTiles(ctx.random.Shuffle(tiles)),
-      tilesPlayed: []
+      tilesPlayed: [[2, 3]]
     }
   },
   turn: {

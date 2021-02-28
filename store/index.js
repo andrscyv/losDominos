@@ -1,4 +1,5 @@
 export const state = () => ({
+  playerId: '',
   tilesPlayed: [
     [3, 6],
     [6, 6],
@@ -46,6 +47,9 @@ export const state = () => ({
 })
 
 export const mutations = {
+  setPlayerId (state, playerId) {
+    state.playerId = playerId
+  },
   setPlayerTiles (state, tiles) {
     state.playerTiles = tiles
   },
@@ -56,9 +60,12 @@ export const mutations = {
   setSelectedTile (state, tile) {
     state.selectedTile = tile
   },
-  setGameState (state, { G, ctx }) {
+  setGameState (state, gameState) {
+    if (!gameState) { return }
+    const { G, ctx } = gameState
+    console.log(ctx)
     state.tilesPlayed = G.tilesPlayed
-    state.playerTiles = G.tilesByPlayer[0].map((tile, idx) => {
+    state.playerTiles = G.tilesByPlayer[parseInt(state.playerId)].map((tile, idx) => {
       return {
         id: idx,
         pips: tile,
@@ -70,7 +77,6 @@ export const mutations = {
 
 export const actions = {
   playSelectedTile ({ commit, state }, { playAtLeftEnd }) {
-    console.log(playAtLeftEnd)
     if (!state.selectedTile) {
       return
     }
