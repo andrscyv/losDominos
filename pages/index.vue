@@ -96,6 +96,7 @@ export default {
   animation:
     typing 1.5s steps(8, end),
     blink-caret .5s step-end infinite;
+  font-size: 2em;
 }
 
 /* The typing effect */

@@ -6,7 +6,7 @@
 
 <style>
 html {
-  background-color: black;
+  background-color: black !important;
   font-family:
     'Source Sans Pro',
     -apple-system,
@@ -27,6 +27,7 @@ html {
 }
 body {
   height: 100%;
+  background-color: black !important;
   font-family: monospace;
   color: #fff;
 }
@@ -39,6 +40,15 @@ input[type="button"]{
 select{
   font-family: monospace;
   background-color: white;
+}
+.modal-content{
+  background-color: black;
+  border-radius: unset;
+  border: 2px solid white;
+}
+
+.modal-header .close {
+  color: white;
 }
 
 *,

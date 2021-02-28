@@ -1,5 +1,6 @@
 <template>
   <div>
+    <app-nav-bar />
     <div class="game">
       <empty-domino v-if="tilesPlayed.length === 0 && selectedTile" @click.native="playFirstTile()" />
       <domino
@@ -12,6 +13,7 @@
     </div>
     <score-board style="position:fixed;top:10px;right:30px" />
     <player-tiles style="position:fixed;bottom:0;left:0" />
+    <app-instructions-modal />
   </div>
 </template>
 

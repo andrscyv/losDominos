@@ -2,6 +2,7 @@ export const state = () => ({
   playerName: '',
   playerId: '',
   matchId: '',
+  baseUrl: 'eldomino.surge.sh',
   tilesPlayed: [
     [3, 6],
     [6, 6],
@@ -80,6 +81,12 @@ export const mutations = {
         isSelected: false
       }
     })
+  }
+}
+
+export const getters = {
+  matchUrl (state) {
+    return `${state.baseUrl}/?matchId=${state.matchId}`
   }
 }
 
