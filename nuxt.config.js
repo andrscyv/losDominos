@@ -24,7 +24,8 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    '~/plugins/dominoes.client.js'
+    '~/plugins/dominoes.client.js',
+    '~/plugins/vue-clipboard2.js'
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

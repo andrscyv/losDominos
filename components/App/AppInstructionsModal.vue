@@ -19,8 +19,14 @@
           </li>
         </ol>
       </p>
-      <p class=" text-center">
-        The link to join this game is {{ matchUrl }}
+      <p ref="container" class=" text-center">
+        Other players can join with this link!:  {{ matchUrl }}
+        <input
+          type="button"
+          value="Copy to clipboard"
+          style="margin:20px"
+          @click="copy"
+        >
       </p>
       <slot name="modal-footer" />
       <template #modal-footer>
@@ -35,7 +41,13 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters(['matchUrl'])
-
+  },
+  methods: {
+    copy () {
+      const container = this.$refs.container
+      this.$copyText(this.matchUrl, container)
+      alert('Link copied!')
+    }
   }
 
 }
