@@ -30,6 +30,16 @@ body {
   font-family: monospace;
   color: #fff;
 }
+input{
+  font-family: monospace;
+}
+input[type="button"]{
+  background-color: white;
+}
+select{
+  font-family: monospace;
+  background-color: white;
+}
 
 *,
 *::before,

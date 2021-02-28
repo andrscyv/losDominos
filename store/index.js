@@ -1,5 +1,7 @@
 export const state = () => ({
+  playerName: '',
   playerId: '',
+  matchId: '',
   tilesPlayed: [
     [3, 6],
     [6, 6],
@@ -47,8 +49,14 @@ export const state = () => ({
 })
 
 export const mutations = {
+  setPlayerName (state, playerName) {
+    state.playerName = playerName
+  },
   setPlayerId (state, playerId) {
     state.playerId = playerId
+  },
+  setMatchId (state, matchId) {
+    state.matchId = matchId
   },
   setPlayerTiles (state, tiles) {
     state.playerTiles = tiles

@@ -6,28 +6,62 @@
       </h1>
     </div>
     <div class="user-form">
-      <div>
-        <span> PlayerId: </span>
-        <input id="" v-model="playerId" type="text" name="">
-        <br>
-        <input type="button" value="play" @click="submitInfo">
+      <div class="form-input">
+        <span> Name: </span>
+        <input id="" v-model="playerName" type="text" name="">
       </div>
+      <div class="form-input">
+        <span> Seat: </span>
+        <select v-model="playerId">
+          <option value="0">
+            1
+          </option>
+          <option value="1">
+            2
+          </option>
+          <option value="2">
+            3
+          </option>
+          <option value="3">
+            4
+          </option>
+        </select>
+      </div>
+      <input v-if="matchId" type="button" value="Join game" class="form-btn" @click="joinGame">
+      <input type="button" value="New game" class="form-btn" @click="newGame">
     </div>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      playerId: ''
+      playerName: '',
+      playerId: '0',
+      matchId: ''
     }
   },
+  mounted () {
+    this.matchId = this.$route.query.matchId
+  },
   methods: {
-    submitInfo () {
-      this.$store.commit('setPlayerId', this.playerId)
+    ...mapMutations(['setPlayerName', 'setPlayerId', 'setMatchId']),
+    joinGame () {
+      this.saveUserData()
+      this.setMatchId(this.matchId)
       this.$router.push('game')
+    },
+    newGame () {
+      this.saveUserData()
+      this.$router.push('game')
+    },
+    saveUserData () {
+      this.setPlayerName(this.playerName)
+      this.setPlayerId(this.playerId)
     }
+
   }
 
 }
@@ -35,14 +69,24 @@ export default {
 
 <style scoped>
 .user-form{
-    height: 400px;
     display: flex;
-    justify-content: center;
-    margin-top:50px;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    margin:30px 0;
+}
+.form-input{
+  margin:10px 0;
+  display:flex;
+  justify-content: space-between;
+  width: 300px;
+}
+.form-btn{
+  margin:10px 0;
 }
 /* DEMO-SPECIFIC STYLES */
 .typewriter h1 {
-  width: 200px;
+  width: 165px;
   overflow: hidden; /* Ensures the content is not revealed until the animation */
   border-right: .15em solid white; /* The typwriter cursor */
   white-space: nowrap; /* Keeps the content on a single line */
@@ -57,7 +101,7 @@ export default {
 /* The typing effect */
 @keyframes typing {
   from { width: 0 }
-  to { width: 200px }
+  to { width: 165px }
 }
 
 /* The typewriter cursor effect */
