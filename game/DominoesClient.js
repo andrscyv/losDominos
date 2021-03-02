@@ -8,6 +8,7 @@ export default class DominoesClient {
     this.client = Client(
       {
         game: Dominoes,
+        numPlayers: 4,
         multiplayer: SocketIO({ server: 'localhost:8000' }),
         playerID,
         debug: false

@@ -6,9 +6,9 @@ export const Dominoes = {
       tilesPlayed: [[2, 3]]
     }
   },
-  turn: {
-    moveLimit: 1
-  },
+  // turn: {
+  //   moveLimit: 1
+  // },
   moves: {
     playTile: (G, ctx, move) => {
       if (isValidMove(G, move)) {
@@ -17,7 +17,12 @@ export const Dominoes = {
     },
     pass: (G, ctx) => {
 
+    },
+    chooseFirstPlayer: (G, ctx, firstPlayerId) => {
+      console.log('firstPlayerId', firstPlayerId)
+      ctx.events.endTurn({ next: '3' })
     }
+
   },
   endIf: (G, ctx) => {
     for (let i = 0; i < 4; i++) {

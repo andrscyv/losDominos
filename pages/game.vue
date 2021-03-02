@@ -14,6 +14,7 @@
     <score-board style="position:fixed;top:10px;right:30px" />
     <player-tiles style="position:fixed;bottom:0;left:0" />
     <app-instructions-modal />
+    <app-start-game-modal />
   </div>
 </template>
 
@@ -38,6 +39,7 @@ export default {
     }
   },
   mounted () {
+    this.$root.$emit('bv::show::modal', 'modal-instructions')
     this.$game.start(this.$store.state.playerId)
     this.$game.client.subscribe(state => this.$store.commit('setGameState', state))
   },

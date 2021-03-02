@@ -1,21 +1,21 @@
 <template>
   <div>
-    <b-button v-b-modal.modal-1>
-      Launch demo modal
-    </b-button>
-
-    <b-modal id="modal-1" title="Welcome!" style="color:black" busy>
+    <b-modal id="modal-instructions" title="Welcome!" style="color:black" busy>
       <p class="my-4">
         <ol>
-          <li>
-            Choose the first person to play and have her/him click the "Start game" button at the top.
+          <li v-if="playerId === currentPlayerId">
+            You are the game host. Click on "Start game" at the top menu to
+            choose who plays the first tile and begin the game.
+          </li>
+          <li v-else>
+            Wait for the game host to choose who plays the first tile and start the game.
           </li>
           <li>
             Click one of your dominoes. The positions where you can play
             will be highlighted in green. Click the green square to play a domino.
           </li>
           <li>
-            You can rearrange your dominoes by draggin them.
+            Rearrange your dominoes by draggin them horizontally.
           </li>
         </ol>
       </p>
@@ -37,10 +37,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 export default {
   computed: {
-    ...mapGetters(['matchUrl'])
+    ...mapGetters(['matchUrl']),
+    ...mapState(['playerId', 'currentPlayerId'])
   },
   methods: {
     copy () {

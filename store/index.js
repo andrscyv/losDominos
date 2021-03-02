@@ -1,6 +1,7 @@
 export const state = () => ({
   playerName: '',
   playerId: '',
+  currentPlayerId: '',
   matchId: '',
   baseUrl: 'eldomino.surge.sh',
   tilesPlayed: [
@@ -81,6 +82,7 @@ export const mutations = {
         isSelected: false
       }
     })
+    state.currentPlayerId = ctx.currentPlayer
   }
 }
 
