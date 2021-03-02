@@ -1,40 +1,24 @@
 <template>
   <div>
-    <player-info v-for="(player, idx) in players" :key="idx" v-bind="player" />
+    <player-info
+      v-for="(numTiles, idx) in numTilesByPlayer"
+      :key="idx"
+      :name="'p' + (idx+1)"
+      :tiles="numTiles"
+      :is-next-to-play="parseInt(currentPlayerId) === idx"
+    />
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import PlayerInfo from './PlayerInfo.vue'
 export default {
   components: {
     PlayerInfo
   },
-  data () {
-    return {
-      players: [
-        {
-          name: 'p1',
-          tiles: 3,
-          isNextToPlay: false
-        },
-        {
-          name: 'p2',
-          tiles: 4,
-          isNextToPlay: true
-        },
-        {
-          name: 'p3',
-          tiles: 4,
-          isNextToPlay: false
-        },
-        {
-          name: 'p4',
-          tiles: 4,
-          isNextToPlay: false
-        }
-      ]
-    }
+  computed: {
+    ...mapState(['currentPlayerId', 'numTilesByPlayer'])
   }
 
 }

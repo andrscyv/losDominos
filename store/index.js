@@ -47,7 +47,8 @@ export const state = () => ({
       isSelected: false
     }
   ],
-  selectedTile: null
+  selectedTile: null,
+  numTilesByPlayer: [0, 0, 0, 0]
 })
 
 export const mutations = {
@@ -83,6 +84,7 @@ export const mutations = {
       }
     })
     state.currentPlayerId = ctx.currentPlayer
+    state.numTilesByPlayer = G.tilesByPlayer.map(tiles => tiles.length)
   }
 }
 

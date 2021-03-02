@@ -3,24 +3,21 @@ export const Dominoes = {
     const tiles = buildTiles()
     return {
       tilesByPlayer: dealTiles(ctx.random.Shuffle(tiles)),
-      tilesPlayed: [[2, 3]]
+      tilesPlayed: []
     }
   },
-  // turn: {
-  //   moveLimit: 1
-  // },
   moves: {
     playTile: (G, ctx, move) => {
       if (isValidMove(G, move)) {
         nextState(G, { ...move, player: ctx.currentPlayer })
+        ctx.events.endTurn()
       }
     },
     pass: (G, ctx) => {
-
+      ctx.events.endTurn()
     },
     chooseFirstPlayer: (G, ctx, firstPlayerId) => {
-      console.log('firstPlayerId', firstPlayerId)
-      ctx.events.endTurn({ next: '3' })
+      ctx.events.endTurn({ next: firstPlayerId })
     }
 
   },
