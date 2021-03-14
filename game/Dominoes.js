@@ -1,3 +1,5 @@
+import { INVALID_MOVE } from 'boardgame.io/core'
+
 export const Dominoes = {
   setup: (ctx) => {
     const tiles = buildTiles()
@@ -8,9 +10,19 @@ export const Dominoes = {
   },
   moves: {
     playTile: (G, ctx, move) => {
-      if (isValidMove(G, move)) {
+      const { tilesByPlayer, tilesPlayed } = G
+      let { currentPlayer } = ctx
+      currentPlayer = parseInt(currentPlayer)
+      const { tile } = move
+      const suitsAtEnds = getSuitsAtEnds(tilesPlayed)
+      if (tileIsPlayable(tile, suitsAtEnds)) {
         nextState(G, { ...move, player: ctx.currentPlayer })
-        ctx.events.endTurn()
+        const nextPlayer = getNextPlayer(currentPlayer, tilesByPlayer, suitsAtEnds)
+        if (nextPlayer >= 0) {
+          ctx.events.endTurn({ next: nextPlayer + '' })
+        } else { ctx.events.endTurn() }
+      } else {
+        return INVALID_MOVE
       }
     },
     pass: (G, ctx) => {
@@ -22,10 +34,21 @@ export const Dominoes = {
 
   },
   endIf: (G, ctx) => {
-    for (let i = 0; i < 4; i++) {
-      if (G.tilesByPlayer[i].length === 0) {
-        return { winner: i }
-      }
+    const { tilesByPlayer, tilesPlayed } = G
+    let { currentPlayer } = ctx
+    currentPlayer = parseInt(currentPlayer)
+
+    if (tilesPlayed.length === 0) { return }
+
+    const suitsAtEnds = getSuitsAtEnds(tilesPlayed)
+    const winner = getPlayerWithNoTiles(tilesByPlayer)
+    if (winner >= 0) { return { winner } }
+
+    const nextPlayer = getNextPlayer(currentPlayer, tilesByPlayer, suitsAtEnds)
+
+    if (nextPlayer < 0) {
+      const teamWithFewerPoints = getTeamWithFewerPoints(tilesByPlayer)
+      if (teamWithFewerPoints >= 0) { return { winner: teamWithFewerPoints } }
     }
   }
 }
@@ -51,24 +74,21 @@ export function buildTiles () {
   return tiles
 }
 
-export function isValidMove (G, { tile, playAtLeftEnd }) {
-  return true
-}
-
 export function nextState (G, { tile, playAtLeftEnd, player }) {
-  const { tilesPlayed } = G
+  let { tilesPlayed } = G
+  console.log(`Played: ${tile} by ${player}`)
 
   if (tilesPlayed.length === 0) {
-    tilesPlayed.push(tile)
+    G.tilesPlayed = [tile]
   } else {
     const suitsAtEnds = getSuitsAtEnds(tilesPlayed)
     const tileToPlay = [...tile]
     if (playAtLeftEnd) {
       if (suitsAtEnds[0] !== tileToPlay[1]) { tileToPlay.reverse() }
-      tilesPlayed.unshift(tileToPlay)
+      tilesPlayed = [tileToPlay, ...tilesPlayed]
     } else {
       if (suitsAtEnds[1] !== tileToPlay[0]) { tileToPlay.reverse() }
-      tilesPlayed.push(tileToPlay)
+      tilesPlayed = [...tilesPlayed, tileToPlay]
     }
   }
 
@@ -76,9 +96,52 @@ export function nextState (G, { tile, playAtLeftEnd, player }) {
 }
 
 export function getSuitsAtEnds (tilesPlayed) {
-  return [tilesPlayed[0][0], tilesPlayed[tilesPlayed.length - 1][1]]
+  return tilesPlayed.length > 0 ? [tilesPlayed[0][0], tilesPlayed[tilesPlayed.length - 1][1]] : []
 }
 
 export function areEqual (tile1, tile2) {
   return tile2.includes(tile1[0]) && tile2.includes(tile1[1])
+}
+
+export function hasPlayableTile (playerTiles, suitsAtEnds) {
+  for (const tile of playerTiles) {
+    if (tileIsPlayable(tile, suitsAtEnds)) { return true }
+  }
+
+  return false
+}
+
+export function tileIsPlayable (tile, suitsAtEnds) {
+  return suitsAtEnds.length > 0 ? suitsAtEnds.includes(tile[0]) || suitsAtEnds.includes(tile[1]) : true
+}
+
+export function getNextPlayer (currentPlayer, tilesByPlayer, suitsAtEnds) {
+  for (let idx = currentPlayer + 1; idx <= currentPlayer + 4; idx++) {
+    const player = idx % 4
+    if (hasPlayableTile(tilesByPlayer[player], suitsAtEnds)) { return player }
+  }
+  return -1
+}
+
+export function getPlayerWithNoTiles (tilesByPlayer) {
+  for (let i = 0; i < 4; i++) {
+    if (tilesByPlayer[i].length === 0) {
+      return i
+    }
+  }
+  return -1
+}
+
+export function countPoints (playerTiles) {
+  return playerTiles.map(tile => tile[0] + tile[1]).reduce((prev, curr) => prev + curr, 0)
+}
+
+export function getTeamWithFewerPoints (tilesByPlayer) {
+  const pointsTeam0 = countPoints([...tilesByPlayer[0], ...tilesByPlayer[2]])
+  const pointsTeam1 = countPoints([...tilesByPlayer[1], ...tilesByPlayer[3]])
+
+  if (pointsTeam0 < pointsTeam1) { return 0 }
+  if (pointsTeam0 > pointsTeam1) { return 1 }
+
+  return -1
 }
