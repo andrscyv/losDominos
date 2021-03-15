@@ -15,12 +15,16 @@ export const Dominoes = {
       currentPlayer = parseInt(currentPlayer)
       const { tile } = move
       const suitsAtEnds = getSuitsAtEnds(tilesPlayed)
+
       if (tileIsPlayable(tile, suitsAtEnds)) {
-        nextState(G, { ...move, player: ctx.currentPlayer })
+        const nextG = nextState(G, { ...move, player: ctx.currentPlayer })
         const nextPlayer = getNextPlayer(currentPlayer, tilesByPlayer, suitsAtEnds)
+
         if (nextPlayer >= 0) {
           ctx.events.endTurn({ next: nextPlayer + '' })
         } else { ctx.events.endTurn() }
+
+        return nextG
       } else {
         return INVALID_MOVE
       }
@@ -75,24 +79,33 @@ export function buildTiles () {
 }
 
 export function nextState (G, { tile, playAtLeftEnd, player }) {
-  let { tilesPlayed } = G
+  const tilesPlayed = deepCopy(G.tilesPlayed)
+  const nextTilesByPlayer = deepCopy(G.tilesByPlayer)
+  let nextTilesPlayed = []
+  const tileToPlay = [...tile]
   console.log(`Played: ${tile} by ${player}`)
 
   if (tilesPlayed.length === 0) {
-    G.tilesPlayed = [tile]
+    nextTilesPlayed = [tileToPlay]
   } else {
     const suitsAtEnds = getSuitsAtEnds(tilesPlayed)
-    const tileToPlay = [...tile]
     if (playAtLeftEnd) {
       if (suitsAtEnds[0] !== tileToPlay[1]) { tileToPlay.reverse() }
-      tilesPlayed = [tileToPlay, ...tilesPlayed]
+      nextTilesPlayed = [tileToPlay, ...tilesPlayed]
     } else {
       if (suitsAtEnds[1] !== tileToPlay[0]) { tileToPlay.reverse() }
-      tilesPlayed = [...tilesPlayed, tileToPlay]
+      nextTilesPlayed = [...tilesPlayed, tileToPlay]
     }
   }
 
-  G.tilesByPlayer[player] = G.tilesByPlayer[player].filter(t => !areEqual(t, tile))
+  nextTilesByPlayer[player] = nextTilesByPlayer[player].filter((t) => {
+    return !areEqual(t, tile)
+  })
+
+  return {
+    tilesPlayed: nextTilesPlayed,
+    tilesByPlayer: nextTilesByPlayer
+  }
 }
 
 export function getSuitsAtEnds (tilesPlayed) {
@@ -100,7 +113,9 @@ export function getSuitsAtEnds (tilesPlayed) {
 }
 
 export function areEqual (tile1, tile2) {
-  return tile2.includes(tile1[0]) && tile2.includes(tile1[1])
+  const firstIsSubsetOfSecond = tile2.includes(tile1[0]) && tile2.includes(tile1[1])
+  const secondIsSubsetOfFirst = tile1.includes(tile2[0]) && tile1.includes(tile2[1])
+  return firstIsSubsetOfSecond && secondIsSubsetOfFirst
 }
 
 export function hasPlayableTile (playerTiles, suitsAtEnds) {
@@ -144,4 +159,8 @@ export function getTeamWithFewerPoints (tilesByPlayer) {
   if (pointsTeam0 > pointsTeam1) { return 1 }
 
   return -1
+}
+
+function deepCopy (arr) {
+  return JSON.parse(JSON.stringify(arr))
 }

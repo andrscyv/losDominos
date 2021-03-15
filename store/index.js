@@ -103,6 +103,7 @@ export const actions = {
       tile: state.selectedTile,
       playAtLeftEnd
     })
+    console.log('playSeletectedTile', state.selectedTile)
     commit('setSelectedTile', null)
   }
 }

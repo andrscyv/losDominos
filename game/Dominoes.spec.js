@@ -1,4 +1,4 @@
-import { dealTiles, buildTiles, tileIsPlayable, hasPlayableTile, getNextPlayer, countPoints, getTeamWithFewerPoints, getSuitsAtEnds } from './Dominoes'
+import { dealTiles, buildTiles, tileIsPlayable, hasPlayableTile, getNextPlayer, countPoints, getTeamWithFewerPoints, getSuitsAtEnds, areEqual } from './Dominoes'
 
 test('it builds 28 tiles', () => {
   const tiles = buildTiles()
@@ -29,6 +29,36 @@ test('it gets suits at ends single suit', () => {
 test('it gets suits at ends no suits', () => {
   const tilesPlayed = []
   expect(getSuitsAtEnds(tilesPlayed)).toStrictEqual([])
+})
+
+test('two tiles are not equal when they dont share any pips', () => {
+  const tile1 = [0, 2]
+  const tile2 = [4, 5]
+  expect(areEqual(tile1, tile2)).toBe(false)
+})
+
+test('two tiles are not equal when they only share one of their pips', () => {
+  const tile1 = [0, 2]
+  const tile2 = [2, 5]
+  expect(areEqual(tile1, tile2)).toBe(false)
+})
+
+test('two tiles are equal when they share both pips', () => {
+  const tile1 = [0, 2]
+  const tile2 = [0, 2]
+  expect(areEqual(tile1, tile2)).toBe(true)
+})
+
+test('two tiles are not equal when one is strict subset of the other', () => {
+  const tile1 = [1, 1]
+  const tile2 = [1, 2]
+  expect(areEqual(tile1, tile2)).toBe(false)
+})
+
+test('two tiles are equal when they share both pips even if unorderd', () => {
+  const tile1 = [0, 2]
+  const tile2 = [2, 0]
+  expect(areEqual(tile1, tile2)).toBe(true)
 })
 
 test('it checks if tile is playable true', () => {
