@@ -5,12 +5,27 @@ export const Dominoes = {
     const tiles = buildTiles()
     return {
       tilesByPlayer: dealTiles(ctx.random.Shuffle(tiles)),
+      // tilesByPlayer: [
+      //   [
+      //     [0, 0], [6, 6]
+      //   ],
+      //   [
+      //     [1, 1], [2, 1], [3, 1]
+      //   ],
+      //   [
+      //     [1, 4], [2, 4], [3, 6]
+      //   ],
+      //   [
+      //     [1, 5], [2, 5], [3, 5]
+      //   ]
+      // ],
+      // tilesPlayed: [[0, 6]]
       tilesPlayed: []
     }
   },
   moves: {
     playTile: (G, ctx, move) => {
-      const { tilesByPlayer, tilesPlayed } = G
+      const { tilesPlayed } = G
       let { currentPlayer } = ctx
       currentPlayer = parseInt(currentPlayer)
       const { tile } = move
@@ -18,7 +33,12 @@ export const Dominoes = {
 
       if (tileIsPlayable(tile, suitsAtEnds)) {
         const nextG = nextState(G, { ...move, player: ctx.currentPlayer })
-        const nextPlayer = getNextPlayer(currentPlayer, tilesByPlayer, suitsAtEnds)
+        const nextSuitsAtEnds = getSuitsAtEnds(nextG.tilesPlayed)
+        const nextPlayer = getNextPlayer(
+          currentPlayer,
+          nextG.tilesByPlayer,
+          nextSuitsAtEnds
+        )
 
         if (nextPlayer >= 0) {
           ctx.events.endTurn({ next: nextPlayer + '' })
