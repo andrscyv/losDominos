@@ -4,12 +4,12 @@ import { LobbyClient } from 'boardgame.io/client'
 const lobbyClient = new LobbyClient({ server: 'http://localhost:8000' })
 
 export const state = () => ({
-  playerName: '',
-  playerId: '',
+  playerName: window.localStorage.getItem('app_playerName') || '',
+  playerId: window.localStorage.getItem('app_playerId') || '',
   currentPlayerId: '',
-  matchId: '',
+  matchId: window.localStorage.getItem('app_matchId') || '',
   winnerId: '',
-  playerCredentials: '',
+  playerCredentials: window.localStorage.getItem('app_playerCredentials') || '',
   baseUrl: 'http://eldomino.surge.sh',
   playerNames: ['', '', '', ''],
   tilesPlayed: [
@@ -62,15 +62,19 @@ export const state = () => ({
 export const mutations = {
   setPlayerName (state, playerName) {
     state.playerName = playerName
+    window.localStorage.setItem('app_playerName', playerName)
   },
   setPlayerId (state, playerId) {
     state.playerId = playerId
+    window.localStorage.setItem('app_playerId', playerId)
   },
   setMatchId (state, matchId) {
     state.matchId = matchId
+    window.localStorage.setItem('app_matchId', matchId)
   },
   setPlayerCredentials (state, playerCredentials) {
     state.playerCredentials = playerCredentials
+    window.localStorage.setItem('app_playerCredentials', playerCredentials)
   },
   setPlayerTiles (state, tiles) {
     state.playerTiles = tiles
@@ -121,7 +125,6 @@ export const actions = {
       tile: state.selectedTile,
       playAtLeftEnd
     })
-    console.log('playSeletectedTile', state.selectedTile)
     commit('setSelectedTile', null)
   },
   async createMatch ({ commit, state }, { numPlayers }) {
@@ -129,8 +132,6 @@ export const actions = {
     commit('setMatchId', matchID)
   },
   async joinMatch ({ commit, state }, { playerID, playerName }) {
-    console.log(playerID)
-    console.log(playerName)
     const { playerCredentials } = await lobbyClient.joinMatch('default', state.matchId, {
       playerID,
       playerName
@@ -138,5 +139,13 @@ export const actions = {
 
     commit('setPlayerCredentials', playerCredentials)
     commit('setPlayerId', playerID)
+  },
+  async setNextMatchId ({ commit, state }) {
+    const { nextMatchID } = await lobbyClient.playAgain('default', state.matchId, {
+      playerID: state.playerId,
+      credentials: state.playerCredentials
+    })
+    commit('setMatchId', nextMatchID)
   }
+
 }

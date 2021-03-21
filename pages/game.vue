@@ -15,6 +15,7 @@
     <player-tiles style="position:fixed;bottom:0;left:0" />
     <app-instructions-modal />
     <app-start-game-modal />
+    <app-game-ended-modal />
   </div>
 </template>
 
@@ -26,7 +27,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['playerId', 'matchId', 'playerCredentials', 'selectedTile', 'tilesPlayed']),
+    ...mapState(['playerId', 'matchId', 'playerCredentials', 'selectedTile', 'tilesPlayed', 'winnerId']),
     isValidMoveByTile () {
       const isValidArr = Array(this.tilesPlayed.length).fill(false)
       if (!this.selectedTile) {
@@ -36,6 +37,11 @@ export default {
       isValidArr[0] = this.isValidMove(this.selectedTile, this.tilesPlayed[0], true)
       isValidArr[this.tilesPlayed.length - 1] = this.isValidMove(this.selectedTile, this.tilesPlayed[this.tilesPlayed.length - 1], false)
       return isValidArr
+    }
+  },
+  watch: {
+    winnerId (newVal) {
+      if (newVal !== '') { console.log('wineeeer'); this.$root.$emit('bv::show::modal', 'modal-game-over') }
     }
   },
   mounted () {

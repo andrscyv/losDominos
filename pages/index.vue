@@ -45,6 +45,7 @@ export default {
   },
   mounted () {
     this.matchId = this.$route.query.matchId
+    if (this.$game.client) { this.$game.client.stop() }
   },
   methods: {
     ...mapMutations(['setPlayerName', 'setPlayerId', 'setMatchId']),
