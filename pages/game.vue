@@ -26,7 +26,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['selectedTile', 'tilesPlayed']),
+    ...mapState(['playerId', 'matchId', 'playerCredentials', 'selectedTile', 'tilesPlayed']),
     isValidMoveByTile () {
       const isValidArr = Array(this.tilesPlayed.length).fill(false)
       if (!this.selectedTile) {
@@ -40,7 +40,8 @@ export default {
   },
   mounted () {
     this.$root.$emit('bv::show::modal', 'modal-instructions')
-    this.$game.start(this.$store.state.playerId)
+    console.log(this.playerCredentials)
+    this.$game.start(this.playerId, this.matchId, this.playerCredentials)
     this.$game.client.subscribe(state => this.$store.commit('setGameState', state))
   },
   methods: {

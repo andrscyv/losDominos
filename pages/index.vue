@@ -48,14 +48,24 @@ export default {
   },
   methods: {
     ...mapMutations(['setPlayerName', 'setPlayerId', 'setMatchId']),
-    joinGame () {
-      this.saveUserData()
+    async joinGame () {
       this.setMatchId(this.matchId)
-      this.$router.push('game')
+      await this.enterGame()
     },
-    newGame () {
-      this.saveUserData()
-      this.$router.push('game')
+    async newGame () {
+      await this.$store.dispatch('createMatch', { numPlayers: 4 })
+      await this.enterGame()
+    },
+    async enterGame () {
+      try {
+        await this.$store.dispatch('joinMatch', {
+          playerID: this.playerId,
+          playerName: this.playerName
+        })
+        this.$router.push('game')
+      } catch (error) {
+        alert('Somebody is at that seat !')
+      }
     },
     saveUserData () {
       this.setPlayerName(this.playerName)

@@ -3,7 +3,7 @@
     <player-info
       v-for="(numTiles, idx) in numTilesByPlayer"
       :key="idx"
-      :name="'p' + (idx+1)"
+      :name="`${playerNames[idx]}` || 'p' + (idx+1)"
       :tiles="numTiles"
       :is-next-to-play="parseInt(currentPlayerId) === idx"
     />
@@ -18,7 +18,7 @@ export default {
     PlayerInfo
   },
   computed: {
-    ...mapState(['currentPlayerId', 'numTilesByPlayer'])
+    ...mapState(['currentPlayerId', 'numTilesByPlayer', 'playerNames'])
   }
 
 }
