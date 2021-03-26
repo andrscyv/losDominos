@@ -2,25 +2,25 @@ import { INVALID_MOVE } from 'boardgame.io/core'
 
 export const Dominoes = {
   setup: (ctx) => {
-    const tiles = buildTiles()
+    // const tiles = buildTiles()
     return {
-      tilesByPlayer: dealTiles(ctx.random.Shuffle(tiles)),
-      // tilesByPlayer: [
-      //   [
-      //     [0, 0], [6, 6]
-      //   ],
-      //   [
-      //     [1, 1], [2, 1], [3, 1]
-      //   ],
-      //   [
-      //     [1, 4], [2, 4], [3, 6]
-      //   ],
-      //   [
-      //     [1, 5], [2, 5], [3, 5]
-      //   ]
-      // ],
-      // tilesPlayed: [[0, 6]]
-      tilesPlayed: []
+      // tilesByPlayer: dealTiles(ctx.random.Shuffle(tiles)),
+      tilesByPlayer: [
+        [
+          [0, 0]//, [6, 6]
+        ],
+        [
+          [1, 1], [2, 1], [3, 1]
+        ],
+        [
+          [1, 4], [2, 4], [3, 6]
+        ],
+        [
+          [1, 5], [2, 5], [3, 5]
+        ]
+      ],
+      tilesPlayed: [[0, 6]]
+      // tilesPlayed: []
     }
   },
   moves: {
@@ -103,7 +103,6 @@ export function nextState (G, { tile, playAtLeftEnd, player }) {
   const nextTilesByPlayer = deepCopy(G.tilesByPlayer)
   let nextTilesPlayed = []
   const tileToPlay = [...tile]
-  console.log(`Played: ${tile} by ${player}`)
 
   if (tilesPlayed.length === 0) {
     nextTilesPlayed = [tileToPlay]

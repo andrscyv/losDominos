@@ -41,7 +41,6 @@ export default {
   },
   methods: {
     startGame () {
-      console.log(this.firstPlayerId + 'begins!!')
       this.$game.client.moves.chooseFirstPlayer(this.firstPlayerId)
       this.$bvModal.hide('modal-start-game')
     }

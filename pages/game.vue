@@ -41,12 +41,11 @@ export default {
   },
   watch: {
     winnerId (newVal) {
-      if (newVal !== '') { console.log('wineeeer'); this.$root.$emit('bv::show::modal', 'modal-game-over') }
+      if (newVal !== '') { this.$root.$emit('bv::show::modal', 'modal-game-over') }
     }
   },
   mounted () {
     this.$root.$emit('bv::show::modal', 'modal-instructions')
-    console.log(this.playerCredentials)
     this.$game.start(this.playerId, this.matchId, this.playerCredentials)
     this.$game.client.subscribe(state => this.$store.commit('setGameState', state))
   },

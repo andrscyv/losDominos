@@ -1,8 +1,9 @@
 import { LobbyClient } from 'boardgame.io/client'
 
-// const lobbyClient = new LobbyClient({ server: 'http://143.198.227.84:8000' })
-const lobbyClient = new LobbyClient({ server: 'http://localhost:8000' })
+const SERVER_HOST = process.env.NUXT_ENV_SERVER_HOST || 'http://localhost:8000'
+const BASE_URL = process.env.NUXT_ENV_BASE_URL || 'http://localhost:3000'
 
+const lobbyClient = new LobbyClient({ server: SERVER_HOST })
 export const state = () => ({
   playerName: window.localStorage.getItem('app_playerName') || '',
   playerId: window.localStorage.getItem('app_playerId') || '',
@@ -10,50 +11,50 @@ export const state = () => ({
   matchId: window.localStorage.getItem('app_matchId') || '',
   winnerId: '',
   playerCredentials: window.localStorage.getItem('app_playerCredentials') || '',
-  baseUrl: 'http://eldomino.surge.sh',
+  baseUrl: BASE_URL,
   playerNames: ['', '', '', ''],
   tilesPlayed: [
-    [3, 6],
-    [6, 6],
-    [6, 2]
+    // [3, 6],
+    // [6, 6],
+    // [6, 2]
 
   ],
   playerTiles: [
-    {
-      id: 1,
-      pips: [1, 2],
-      isSelected: false
-    },
-    {
-      id: 2,
-      pips: [4, 3],
-      isSelected: false
-    },
-    {
-      id: 3,
-      pips: [6, 4],
-      isSelected: false
-    },
-    {
-      id: 4,
-      pips: [1, 1],
-      isSelected: false
-    },
-    {
-      id: 5,
-      pips: [6, 5],
-      isSelected: false
-    },
-    {
-      id: 6,
-      pips: [2, 3],
-      isSelected: false
-    },
-    {
-      id: 7,
-      pips: [0, 4],
-      isSelected: false
-    }
+    // {
+    //   id: 1,
+    //   pips: [1, 2],
+    //   isSelected: false
+    // },
+    // {
+    //   id: 2,
+    //   pips: [4, 3],
+    //   isSelected: false
+    // },
+    // {
+    //   id: 3,
+    //   pips: [6, 4],
+    //   isSelected: false
+    // },
+    // {
+    //   id: 4,
+    //   pips: [1, 1],
+    //   isSelected: false
+    // },
+    // {
+    //   id: 5,
+    //   pips: [6, 5],
+    //   isSelected: false
+    // },
+    // {
+    //   id: 6,
+    //   pips: [2, 3],
+    //   isSelected: false
+    // },
+    // {
+    //   id: 7,
+    //   pips: [0, 4],
+    //   isSelected: false
+    // }
   ],
   selectedTile: null,
   numTilesByPlayer: [0, 0, 0, 0]
