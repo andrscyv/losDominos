@@ -1,29 +1,27 @@
 <template>
   <div>
-    <b-modal id="modal-instructions" title="Welcome!" style="color:black" busy>
+    <b-modal id="modal-instructions" :title="$t('welcome')" style="color:black" busy>
       <p class="my-4">
         <ol>
           <li v-if="playerId === currentPlayerId">
-            You are the game host. Click on "Start game" at the top menu to
-            choose who plays the first tile and begin the game.
+            {{ $t('host_message') }}
           </li>
           <li v-else>
-            Wait for the game host to choose who plays the first tile and start the game.
+            {{ $t('player_message') }}
           </li>
           <li>
-            Click one of your dominoes. The positions where you can play
-            will be highlighted in green. Click the green square to play a domino.
+            {{ $t('inst_1') }}
           </li>
           <li>
-            Rearrange your dominoes by draggin them horizontally.
+            {{ $t('inst_2') }}
           </li>
         </ol>
       </p>
       <p ref="container" class=" text-center">
-        Other players can join with this link!:  {{ matchUrl }}
+        {{ $t('link_message') }}  {{ matchUrl }}
         <input
           type="button"
-          value="Copy to clipboard"
+          :value="$t('clipboard')"
           style="margin:20px"
           @click="copy"
         >
