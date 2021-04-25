@@ -46,12 +46,6 @@ export default {
     },
     toggleModal () {
       this.$root.$emit('bv::toggle::modal', 'modal-1', '#btnToggle')
-    },
-    changeLocale (locale) {
-      console.log(locale)
-      console.log(this.$i18n)
-      console.log(this.$i18n.localeProperties.name)
-      this.$i18n.setLocale(locale.code)
     }
   }
 }
