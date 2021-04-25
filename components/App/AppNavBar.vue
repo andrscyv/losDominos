@@ -14,9 +14,16 @@
           <b-nav-item href="#" :disabled="playerId !== currentPlayerId" @click="showModal('modal-start-game')">
             {{ $t('start') }}
           </b-nav-item>
-          <b-nav-item>
-            <language-drop-down />
-          </b-nav-item>
+          <b-nav-item-dropdown :text="$t('lang')">
+            <b-dropdown-item
+              v-for="lang in $i18n.locales"
+              :key="lang.code"
+              :value="lang.code"
+              @click="$i18n.locale=lang.code"
+            >
+              {{ lang.name }}
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -25,12 +32,8 @@
 
 <script>
 import { mapState } from 'vuex'
-import LanguageDropDown from '~/components/App/LanguageDropDown.vue'
 
 export default {
-  components: {
-    LanguageDropDown
-  },
   computed: {
     ...mapState(['playerId', 'currentPlayerId'])
   },
@@ -43,6 +46,12 @@ export default {
     },
     toggleModal () {
       this.$root.$emit('bv::toggle::modal', 'modal-1', '#btnToggle')
+    },
+    changeLocale (locale) {
+      console.log(locale)
+      console.log(this.$i18n)
+      console.log(this.$i18n.localeProperties.name)
+      this.$i18n.setLocale(locale.code)
     }
   }
 }

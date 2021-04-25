@@ -18,5 +18,6 @@
     "game_over": "Game over!",
     "clipboard": "Copy to clipboard",
     "join": "Join game",
-    "new": "New game"
+    "new": "New game",
+    "lang": "Lang"
 }
