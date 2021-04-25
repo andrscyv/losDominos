@@ -14,6 +14,9 @@
           <b-nav-item href="#" :disabled="playerId !== currentPlayerId" @click="showModal('modal-start-game')">
             {{ $t('start') }}
           </b-nav-item>
+          <b-nav-item>
+            <language-drop-down />
+          </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -22,7 +25,12 @@
 
 <script>
 import { mapState } from 'vuex'
+import LanguageDropDown from '~/components/App/LanguageDropDown.vue'
+
 export default {
+  components: {
+    LanguageDropDown
+  },
   computed: {
     ...mapState(['playerId', 'currentPlayerId'])
   },

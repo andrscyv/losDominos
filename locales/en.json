@@ -12,8 +12,11 @@
     "start": "Start game",
     "choose": "Choose who plays the first tile.",
     "seat": "Seat:",
+    "name": "Name:",
     "start_message": "Start the game!",
     "again": "Play again!",
     "game_over": "Game over!",
-    "clipboard": "Copy to clipboard"
+    "clipboard": "Copy to clipboard",
+    "join": "Join game",
+    "new": "New game"
 }
