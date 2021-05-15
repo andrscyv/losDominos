@@ -7,11 +7,11 @@
     </div>
     <div class="user-form">
       <div class="form-input">
-        <span> Name: </span>
+        <span> {{ $t('name') }} </span>
         <input id="" v-model="playerName" type="text" name="">
       </div>
       <div class="form-input">
-        <span> Seat: </span>
+        <span> {{ $t('seat') }} </span>
         <select v-model="playerId">
           <option value="0">
             1
@@ -27,8 +27,8 @@
           </option>
         </select>
       </div>
-      <input v-if="matchId" type="button" value="Join game" class="form-btn" @click="joinGame">
-      <input type="button" value="New game" class="form-btn" @click="newGame">
+      <input v-if="matchId" type="button" :value="$t('join')" class="form-btn" @click="joinGame">
+      <input type="button" :value="$t('new')" class="form-btn" @click="newGame">
     </div>
   </div>
 </template>

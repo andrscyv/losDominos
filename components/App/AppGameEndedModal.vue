@@ -1,11 +1,11 @@
 <template>
   <div>
-    <b-modal id="modal-game-over" ref="game-ended-modal" title="Game over!">
+    <b-modal id="modal-game-over" ref="game-ended-modal" :title="$t('game_over')">
       <div class="content">
         <p>
-          The winners are {{ firstWinner + ' and ' + secondWinner }}
+          {{ $t('winners') }} {{ firstWinner }} {{ $t('and') }} {{ secondWinner }}
         </p>
-        <input type="button" value="Play again!" class="modal-btn" @click="startNewGame">
+        <input type="button" :value="$t('again')" class="modal-btn" @click="startNewGame">
       </div>
       <slot name="modal-footer" />
       <template #modal-footer>

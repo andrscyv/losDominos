@@ -1,12 +1,12 @@
 <template>
   <div>
-    <b-modal id="modal-start-game" title="Start the game!">
+    <b-modal id="modal-start-game" :title="$t('start_message')">
       <div class="start-game-form">
         <p>
-          Choose who plays the first tile.
+          {{ $t('choose') }}
         </p>
         <div class="form-input">
-          <span> Seat: </span>
+          <span> {{ $t('seat') }} </span>
           <select v-model="firstPlayerId">
             <option value="0">
               1
@@ -22,7 +22,7 @@
             </option>
           </select>
         </div>
-        <input type="button" value="Start game!" class="form-btn" @click="startGame">
+        <input type="button" :value="$t('start_message')" class="form-btn" @click="startGame">
       </div>
       <slot name="modal-footer" />
       <template #modal-footer>

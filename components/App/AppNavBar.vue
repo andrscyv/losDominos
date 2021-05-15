@@ -6,14 +6,24 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item @click="showModal('modal-instructions')">
-            Invite friends!
+            {{ $t('invite') }}
           </b-nav-item>
           <b-nav-item @click="showModal('modal-instructions')">
-            Instructions
+            {{ $t('instructions') }}
           </b-nav-item>
           <b-nav-item href="#" :disabled="playerId !== currentPlayerId" @click="showModal('modal-start-game')">
-            Start game
+            {{ $t('start') }}
           </b-nav-item>
+          <b-nav-item-dropdown :text="$t('lang')">
+            <b-dropdown-item
+              v-for="lang in $i18n.locales"
+              :key="lang.code"
+              :value="lang.code"
+              @click="$i18n.locale=lang.code"
+            >
+              {{ lang.name }}
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -22,6 +32,7 @@
 
 <script>
 import { mapState } from 'vuex'
+
 export default {
   computed: {
     ...mapState(['playerId', 'currentPlayerId'])
